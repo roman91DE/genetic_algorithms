@@ -3,9 +3,11 @@ import java.util.Random;
 public class Individual {
     final private int[] chromosome;
     private int fitness;
+
+
     final private FitnessFunction fitnessFunction;
 
-    final private int _lowerBound, _upperBound, _length;
+    final private int lowerBound, upperBound, length;
     final static Random generator = new Random();
 
     public Individual(FitnessFunction fitnessFunction, int length, int lowerBound, int upperBound) {
@@ -20,9 +22,9 @@ public class Individual {
 
         this.chromosome = new int[length];
         this.fitnessFunction = fitnessFunction;
-        this._lowerBound = lowerBound;
-        this._upperBound = upperBound;
-        this._length = length;
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
+        this.length = length;
 
         for (int idx = 0; idx < length; idx++) {
             this.chromosome[idx] = Individual.generator.nextInt(lowerBound, upperBound);
@@ -34,15 +36,31 @@ public class Individual {
         return this.fitness;
     }
 
+    public int getLowerBound(){
+        return this.lowerBound;
+    }
+
+    public int getUpperBound(){
+        return this.upperBound;
+    }
+
+    public int getLength(){
+        return this.length;
+    }
+
+    public FitnessFunction getFitnessFunction() {
+        return fitnessFunction;
+    }
+
     public void recomputeFitness(){
         this.fitness = fitnessFunction.getFitness(this);
     }
 
-    private void setChromosome(int[] chromosome){
-        if (chromosome.length != this._length) {
+    public void setChromosome(int[] chromosome){
+        if (chromosome.length != this.length) {
             throw new IllegalArgumentException("Chromosome must have the same length as the individual");
         }
-        if (Arrays.stream(chromosome).anyMatch(x -> x < this._lowerBound) || Arrays.stream(chromosome).anyMatch(x -> x >= this._upperBound)) {
+        if (Arrays.stream(chromosome).anyMatch(x -> x < this.lowerBound) || Arrays.stream(chromosome).anyMatch(x -> x >= this.upperBound)) {
             throw new IllegalArgumentException("Chromosome must have values between lower and upper bound");
         }
         System.arraycopy(chromosome, 0, this.chromosome, 0, chromosome.length);
@@ -50,39 +68,23 @@ public class Individual {
 
     public void mutateChromosome(float mutationRate){
         boolean mutated = false;
-        for (int idx = 0; idx < this._length; idx++) {
+        for (int idx = 0; idx < this.length; idx++) {
             if (Individual.generator.nextFloat() < mutationRate) {
                 mutated = true;
-                this.chromosome[idx] = generator.nextInt(this._lowerBound, this._upperBound);
+                this.chromosome[idx] = generator.nextInt(this.lowerBound, this.upperBound);
             }
         }
         if (mutated) {
             this.recomputeFitness();
         }
     }
-    public Individual applyCrossover(Individual other, float crossoverRate){
-        if (this._length != other._length) {
-            throw new IllegalArgumentException("Individuals must have the same length");
-        }
-        if (this._lowerBound != other._lowerBound || this._upperBound != other._upperBound) {
-            throw new IllegalArgumentException("Individuals must have the same lower and upper bound");
-        }
 
-        if (Individual.generator.nextFloat() < crossoverRate) {
-            return this.createCrossoverOffspring(other);
-        }
-        return this;
+
+    public static Individual crossover(Individual mother, Individual father, CrossoverFunction crossoverFunction, float crossoverRate){
+        return crossoverFunction.executeCrossover(mother, father, crossoverRate);
     }
 
-    private Individual createCrossoverOffspring(Individual other) {
-        int crossoverPoint = Individual.generator.nextInt(0, this._length);
-        int[] newChromosome = this.getChromosomeArray().clone();
-        if (this._length - crossoverPoint >= 0)
-            System.arraycopy(other.chromosome, crossoverPoint, newChromosome, crossoverPoint, this._length - crossoverPoint);
-        Individual offspring = new Individual(this.fitnessFunction, this._length, this._lowerBound, this._upperBound);
-        offspring.setChromosome(newChromosome);
-        return offspring;
-    }
+
 
     public int[] getChromosomeArray(){
         return this.chromosome;

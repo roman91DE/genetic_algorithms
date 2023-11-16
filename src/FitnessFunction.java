@@ -1,3 +1,3 @@
-interface FitnessFunction {
+public interface FitnessFunction {
     public int getFitness(Individual ind);
 }

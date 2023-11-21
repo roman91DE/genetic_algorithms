@@ -1,4 +1,4 @@
-public class OnePointCrossover implements CrossoverFunction{
+public class OnePointCrossover implements CrossoverOperator {
     @Override
     public Individual crossOver(Individual mother, Individual father, float crossoverRate) {
         int crossoverPoint = Individual.generator.nextInt(0, mother.getLength());

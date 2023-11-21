@@ -4,7 +4,6 @@ public class Individual {
     final private int[] chromosome;
     private int fitness;
 
-
     final private FitnessFunction fitnessFunction;
 
     final private int lowerBound, upperBound, length;

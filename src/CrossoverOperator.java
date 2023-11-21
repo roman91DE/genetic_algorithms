@@ -1,4 +1,4 @@
-public interface CrossoverFunction {
+public interface CrossoverOperator {
     Individual crossOver(Individual mother, Individual father, float crossoverRate);
 
     default void checkCompatibility(Individual mother, Individual father) throws IllegalArgumentException{

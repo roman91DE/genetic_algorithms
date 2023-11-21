@@ -3,7 +3,7 @@
 public class Main {
     public static void main(String[] args) {
         FitnessFunction fitnessFunction = new OneMaxFitness();
-        CrossoverFunction cf = new OnePointCrossover();
+        CrossoverOperator cf = new OnePointCrossover();
         Individual mom = new Individual(fitnessFunction, 10,1, 10);
         Individual dad = new Individual(fitnessFunction, 10,1, 10);
         Individual child = cf.mate(mom, dad, 0.5f);

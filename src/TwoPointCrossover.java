@@ -1,4 +1,4 @@
-public class TwoPointCrossover implements CrossoverFunction{
+public class TwoPointCrossover implements CrossoverOperator {
     @Override
     public Individual crossOver(Individual mother, Individual father, float crossoverRate) {
         int crossoverPointOne, crossoverPointTwo;

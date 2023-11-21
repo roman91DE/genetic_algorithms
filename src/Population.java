@@ -11,6 +11,22 @@ public class Population {
         }
     }
 
+    public Population(Individual[] individuals) {
+        this.individuals = individuals;
+    }
+
+    public Individual getIndividual(int index) {
+        return this.individuals[index];
+    }
+
+    public void setIndividual(int index, Individual individual) {
+        this.individuals[index] = individual;
+    }
+
+    public int getSize() {
+        return this.individuals.length;
+    }
+
     public void sortPopulation() {
         Arrays.sort(this.individuals, Comparator.comparingInt(Individual::getFitness));
     }

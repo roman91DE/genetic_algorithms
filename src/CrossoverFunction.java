@@ -1,7 +1,7 @@
 public interface CrossoverFunction {
-    public Individual applyCrossover(Individual mother, Individual father, float crossoverRate);
+    Individual crossOver(Individual mother, Individual father, float crossoverRate);
 
-    private void checkCompatibility(Individual mother, Individual father) {
+    default void checkCompatibility(Individual mother, Individual father) throws IllegalArgumentException{
         if (mother.getLength() != father.getLength()) {
             throw new IllegalArgumentException("Individuals must have the same length");
         }
@@ -10,7 +10,7 @@ public interface CrossoverFunction {
         }
     }
 
-    Individual executeCrossover(Individual mother, Individual father, float crossoverRate) {
+    default Individual mate(Individual mother, Individual father, float crossoverRate) {
         try {
             checkCompatibility(mother, father);
         } catch (IllegalArgumentException e) {
@@ -18,11 +18,12 @@ public interface CrossoverFunction {
             return null;
         }
         if (Individual.generator.nextFloat() < crossoverRate) {
-            return this.applyCrossover(mother, father, crossoverRate);
+            return crossOver(mother, father, crossoverRate);
         }
         if (Individual.generator.nextFloat() < 0.5) {
             return mother;
+        } else {
+            return father;
         }
-        return father;
     }
 }

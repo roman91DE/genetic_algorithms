@@ -80,12 +80,6 @@ public class Individual {
     }
 
 
-    public static Individual crossover(Individual mother, Individual father, CrossoverFunction crossoverFunction, float crossoverRate){
-        return crossoverFunction.executeCrossover(mother, father, crossoverRate);
-    }
-
-
-
     public int[] getChromosomeArray(){
         return this.chromosome;
     }
